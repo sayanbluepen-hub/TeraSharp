@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gis-bg: #0a0e1a;
+  --gis-surface: #111827;
+  --gis-card: #1a2235;
+  --gis-border: #1e3a5f;
+  --gis-accent: #0ea5e9;
+  --gis-green: #10b981;
+  --gis-yellow: #f59e0b;
+  --gis-red: #ef4444;
+  --gis-text: #e2e8f0;
+  --gis-muted: #64748b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: var(--gis-bg);
+  color: var(--gis-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--gis-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gis-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gis-accent);
+}
+
+/* Glassmorphism card */
+.gis-card {
+  background: var(--gis-card);
+  border: 1px solid var(--gis-border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Section header */
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gis-muted);
+  margin-bottom: 8px;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.badge-demo {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--gis-yellow);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.badge-live {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--gis-green);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+/* Metric value */
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
+  50%       { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+}
+
+.pulse-green {
+  animation: pulse-glow 2s infinite;
+}
