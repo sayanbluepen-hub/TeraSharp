@@ -1,0 +1,269 @@
+@import "tailwindcss";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "leaflet/dist/leaflet.css";
+
+/* ── Tailwind v4 Theme ─────────────────────────────────────── */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+  --color-tactical: #34d399;
+  --color-tactical-dim: rgba(52, 211, 153, 0.15);
+  --color-tactical-muted: rgba(52, 211, 153, 0.06);
+  --color-obsidian: #09090b;
+  --color-surface: #0c0c0e;
+  --color-surface-raised: #111113;
+  --color-border-hard: #1e1e22;
+  --color-border-soft: #27272a;
+}
+
+/* ── Base Reset ────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-obsidian);
+  color: #fafafa;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Tactical Pulse Keyframe ───────────────────────────────── */
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
+  }
+  50% {
+    opacity: 0.8;
+    box-shadow: 0 0 0 5px rgba(52, 211, 153, 0);
+  }
+}
+
+.pulse-indicator {
+  animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Scan Line ─────────────────────────────────────────────── */
+@keyframes scanline {
+  0% { top: -2px; opacity: 0; }
+  10% { opacity: 0.4; }
+  90% { opacity: 0.4; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.scan-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--color-tactical) 20%, var(--color-tactical) 80%, transparent 100%);
+  opacity: 0.4;
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ── Reticle ───────────────────────────────────────────────── */
+.reticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 999;
+}
+
+.reticle-line {
+  position: absolute;
+  background-color: rgba(52, 211, 153, 0.2);
+}
+
+.reticle-line.h {
+  width: 40px;
+  height: 1px;
+  top: 50%;
+}
+
+.reticle-line.v {
+  width: 1px;
+  height: 40px;
+  left: 50%;
+}
+
+.reticle-line.h.left { right: calc(50% + 6px); }
+.reticle-line.h.right { left: calc(50% + 6px); }
+.reticle-line.v.top { bottom: calc(50% + 6px); }
+.reticle-line.v.bottom { top: calc(50% + 6px); }
+
+.reticle-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 4px;
+  height: 4px;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 0;
+}
+
+/* ── Data Tick Animation ───────────────────────────────────── */
+@keyframes data-tick {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.data-tick {
+  animation: data-tick 3s ease-in-out infinite;
+}
+
+.data-tick-delay-1 { animation-delay: 0.5s; }
+.data-tick-delay-2 { animation-delay: 1s; }
+.data-tick-delay-3 { animation-delay: 1.5s; }
+
+/* ── Sidebar Hover ─────────────────────────────────────────── */
+.sidebar-item {
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+
+.sidebar-item:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: #3f3f46;
+}
+
+/* ── Mini Bar Chart ────────────────────────────────────────── */
+@keyframes bar-grow {
+  0% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+  100% { transform: scaleY(0.3); }
+}
+
+.bar-anim {
+  animation: bar-grow 2s ease-in-out infinite;
+  transform-origin: bottom;
+}
+
+.bar-anim:nth-child(1) { animation-delay: 0s; }
+.bar-anim:nth-child(2) { animation-delay: 0.2s; }
+.bar-anim:nth-child(3) { animation-delay: 0.4s; }
+.bar-anim:nth-child(4) { animation-delay: 0.6s; }
+.bar-anim:nth-child(5) { animation-delay: 0.3s; }
+.bar-anim:nth-child(6) { animation-delay: 0.5s; }
+
+/* ── Grid Overlay ──────────────────────────────────────────── */
+.tactical-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  background-image:
+    linear-gradient(rgba(52, 211, 153, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(52, 211, 153, 0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* ── Corner Brackets ───────────────────────────────────────── */
+.corner-bracket {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(52, 211, 153, 0.15);
+  border-style: solid;
+  pointer-events: none;
+  z-index: 1001;
+}
+
+.corner-bracket.tl { top: 12px; left: 12px; border-width: 1px 0 0 1px; }
+.corner-bracket.tr { top: 12px; right: 12px; border-width: 1px 1px 0 0; }
+.corner-bracket.bl { bottom: 12px; left: 12px; border-width: 0 0 1px 1px; }
+.corner-bracket.br { bottom: 12px; right: 12px; border-width: 0 1px 1px 0; }
+
+/* ── Leaflet Overrides (Dark Mode) ─────────────────────────── */
+.leaflet-container {
+  background-color: var(--color-obsidian) !important;
+  outline: none;
+}
+
+.leaflet-control-zoom {
+  border: 1px solid var(--color-border-hard) !important;
+  border-radius: 2px !important;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--color-surface-raised) !important;
+  color: #71717a !important;
+  border-bottom: 1px solid var(--color-border-hard) !important;
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  font-size: 13px !important;
+  font-family: var(--font-mono) !important;
+  transition: all 150ms ease !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #1a1a1e !important;
+  color: var(--color-tactical) !important;
+}
+
+.leaflet-control-attribution {
+  background-color: rgba(9, 9, 11, 0.9) !important;
+  color: #3f3f46 !important;
+  font-size: 9px !important;
+  padding: 2px 8px !important;
+  font-family: var(--font-mono) !important;
+  letter-spacing: 0.05em;
+  border-top: 1px solid var(--color-border-hard) !important;
+  border-left: 1px solid var(--color-border-hard) !important;
+}
+
+.leaflet-control-attribution a {
+  color: #52525b !important;
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* ── Selection ─────────────────────────────────────────────── */
+::selection {
+  background-color: rgba(52, 211, 153, 0.2);
+  color: #fafafa;
+}
+
+/* ── Sidebar Transition ────────────────────────────────────── */
+.sidebar-enter {
+  transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease;
+}
