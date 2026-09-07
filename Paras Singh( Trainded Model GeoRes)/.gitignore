@@ -1,0 +1,28 @@
+# Environments
+.venv/
+env/
+venv/
+__pycache__/
+*.pyc
+
+# Kaggle & Credentials
+kaggle.json
+access_token
+.kaggle/
+
+# Datasets & Large Binaries
+data/
+datasets/
+*.zip
+*.tar.gz
+*.tif
+*.tiff
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.png
+
+# Checkpoints & Models
+checkpoints/
+*.pth
+*.pt
+*.onnx
